@@ -12,14 +12,16 @@ const gallery = document.querySelector('.js-gallery');
 const modalForGallery = document.querySelector('.js-lightbox');
 const imgForModal = modalForGallery.querySelector('.lightbox__image');
 const closeModaleBtn = document.querySelector('button[data-action="close-lightbox"]');
-const modalBackdrop = modalForGallery.querySelector('div.lightbox__overlay')
+const modalBackdrop = modalForGallery.querySelector('div.lightbox__overlay');
 
 const galleryMarkup = makeGalleryMarkap(images);
 gallery.insertAdjacentHTML('beforeend', galleryMarkup)
 const galleryLinks = document.querySelectorAll('.gallery__link');
 galleryLinks.forEach(link => {
-    link.setAttribute('onclick', 'return false')
+  link.setAttribute('onclick', 'return false')
 });
+const imagesSrcList = [...document.querySelectorAll('.gallery__image')].map(image => image.dataset.source);
+
 
 
 gallery.addEventListener('click', openModalOnClick);
@@ -81,23 +83,26 @@ function onEscKeyPress(e) {
   }
 };
 
+
 function changeImagesWithArrowKeys(e) {
-    let newIndex = images.findIndex(image => image.original === imgForModal.src);
+  let newIndex = imagesSrcList.indexOf(imgForModal.src);
+  // let newIndex = imagesSrcList.findIndex(src => src === imgForModal.src);
+
   if (newIndex < 0) {
     return;
   }
   if (e.code === 'ArrowLeft') {
     newIndex -= 1;
     if (newIndex === -1) {
-      newIndex = images.length - 1;
+      newIndex = imagesSrcList.length - 1;
     }
   } else if (e.code === 'ArrowRight') {
     newIndex += 1;
-    if (newIndex === images.length) {
+    if (newIndex === imagesSrcList.length) {
       newIndex = 0;
     }
   }
-  imgForModal.src = images[newIndex].original;
+  imgForModal.src = imagesSrcList[newIndex];
 };
 
 function onModalBackdropClick(e) {
