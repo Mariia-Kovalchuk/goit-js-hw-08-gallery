@@ -25,9 +25,9 @@ const imagesSrcList = [...document.querySelectorAll('.gallery__image')].map(imag
 
 
 gallery.addEventListener('click', openModalOnClick);
-closeModaleBtn.addEventListener('click', closeMoalOnClick);
-document.addEventListener('keydown', changeImagesWithArrowKeys);
-modalBackdrop.addEventListener('click', onModalBackdropClick)
+// closeModaleBtn.addEventListener('click', closeMoalOnClick);
+// document.addEventListener('keydown', changeImagesWithArrowKeys);
+// modalBackdrop.addEventListener('click', onModalBackdropClick)
 
 
 
@@ -37,6 +37,7 @@ function makeGalleryMarkap(images) {
       <li class="gallery__item">
        <a class="gallery__link"  href="${original}">
         <img
+        loading="lazy"
         class="gallery__image"
         src="${preview}"
         data-source="${original}"
@@ -56,13 +57,15 @@ function getOriginalSrc(e) {
 };
 
 function openModalOnClick(e) {
-    if (!e.target.classList.contains('gallery__image')) {
+  if (!e.target.classList.contains('gallery__image')) {
         return;
-    };
-    modalForGallery.classList.add("is-open");
-    imgForModal.src = getOriginalSrc(e);
-
-     window.addEventListener('keydown', onEscKeyPress);
+  };
+  modalForGallery.classList.add("is-open");
+  imgForModal.src = getOriginalSrc(e);
+  closeModaleBtn.addEventListener('click', closeMoalOnClick);
+  document.addEventListener('keydown', changeImagesWithArrowKeys);
+  modalBackdrop.addEventListener('click', onModalBackdropClick);
+  window.addEventListener('keydown', onEscKeyPress);
     
 };
 
@@ -114,3 +117,41 @@ function onModalBackdropClick(e) {
 
 
 
+if ('loading' in HTMLImageElement.prototype) {
+  console.log('Браузер поддерживает lazyload');
+  // addSrcAttrToLazyImages();
+} else {
+  console.log('Браузер НЕ поддерживает lazyload');
+  addLazySizesScript();
+};
+
+// Добавение эффектов картинкам после зарузки 
+// const lazyImages = document.querySelectorAll('img[data-src]');
+
+// lazyImages.forEach(image => {
+//   image.addEventListener('load', onImageLoaded, { once: true });
+// });
+
+// function onImageLoaded(evt) {
+//   console.log('Картинка загрузилась');
+//   evt.target.classList.add('appear');
+// }
+
+function addLazySizesScript() {
+  const script = document.createElement('script');
+  script.src =
+    'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js';
+  script.integrity =
+    'sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==';
+  script.crossOrigin = 'anonymous';
+
+  document.body.appendChild(script);
+}
+
+// function addSrcAttrToLazyImages() {
+//   const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+
+//   lazyImages.forEach(img => {
+//     img.src = img.dataset.src;
+//   });
+// }
