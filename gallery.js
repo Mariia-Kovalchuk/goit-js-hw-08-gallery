@@ -16,18 +16,12 @@ const modalBackdrop = modalForGallery.querySelector('div.lightbox__overlay');
 
 const galleryMarkup = makeGalleryMarkap(images);
 gallery.insertAdjacentHTML('beforeend', galleryMarkup)
-const galleryLinks = document.querySelectorAll('.gallery__link');
-galleryLinks.forEach(link => {
-  link.setAttribute('onclick', 'return false')
-});
+
 const imagesSrcList = [...document.querySelectorAll('.gallery__image')].map(image => image.dataset.source);
 
 
 
 gallery.addEventListener('click', openModalOnClick);
-// closeModaleBtn.addEventListener('click', closeMoalOnClick);
-// document.addEventListener('keydown', changeImagesWithArrowKeys);
-// modalBackdrop.addEventListener('click', onModalBackdropClick)
 
 
 
@@ -57,6 +51,8 @@ function getOriginalSrc(e) {
 };
 
 function openModalOnClick(e) {
+  // для запрета перехода по ссылке
+  e.preventDefault();
   if (!e.target.classList.contains('gallery__image')) {
         return;
   };
